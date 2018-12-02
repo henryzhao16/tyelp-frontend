@@ -6,13 +6,13 @@ import Query from './components/query';
 import Stories from './components/stories';
 import Accepted from './components/accepted';
 import Unaccepted from './components/unaccepted';
-import Store from './store/store';
+//import Store from './store/store';
 import async from './hoc/async';
 import './App.css';
 
-const AsyncUI = async(
+const AsyncQuery = async(
 	() => {
-		return import('./components/main_ui');
+		return import('./components/query');
 	}
 );
 
@@ -22,7 +22,10 @@ class App extends Component {
 	{
 		super(props);
 		this.state = {
-			user: null,
+			user: {
+				username: null,
+				favorites: []
+			},
 			authenticated: true,
 			token: null,
 			restaurants: []
@@ -49,8 +52,7 @@ class App extends Component {
 			<Switch>
 				<Route path='/login' exact component={ Login } />
 				<Route path='/register' exact component={ Register } />
-				{ this.state.authenticated? <Route path='/query' component={ Query } /> : null }
-				{ this.state.authenticated? <Route path='/ui' component={ AsyncUI } /> : null }
+				{ this.state.authenticated? <Route path='/query' component={ AsyncQuery } /> : null }
 				{ this.state.authenticated? <Route path='/stories' component={ Stories } /> : null }
 				<Route path='/accepted' component={ Accepted } />
 				<Route path='/unaccepted' component={ Unaccepted } />
