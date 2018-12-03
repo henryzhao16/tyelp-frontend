@@ -4,6 +4,7 @@ import * as actions from '../store/actions/app.actions';
 import Map from './map';
 import Restaurant from './restaurant';
 import '../styles/query.css';
+import axios from "axios/index";
 
 class Query extends Component {
 
@@ -86,6 +87,27 @@ class Query extends Component {
 		const selection = this.state.restaurants[this.state.index];
 		Store.dispatch(actions.SET_FAVORITES_ACTION(selection));
 		this.props.history.push({ pathname: '/stories' })
+
+		var self = this;
+    var data = {
+      //user_id: this.state.userID,
+      place_id: this.state.restaurant.id
+    };
+
+    axios({
+      method: 'post',
+      url: 'http://localhost/project/api/history',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      data
+    }).then(function(response) {
+      console.log('History Updated');
+    }).catch(function(error) {
+      console.log('Error on Update');
+      //self.setState({status: error.response.status});  // 401
+    });
+
 	}
 
 	// Function to submit distance

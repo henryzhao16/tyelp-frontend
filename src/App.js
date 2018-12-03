@@ -24,6 +24,7 @@ class App extends Component {
 		this.state = {
 			user: {
 				username: null,
+				userID:null,
 				favorites: []
 			},
 			authenticated: true,
@@ -56,7 +57,7 @@ class App extends Component {
 				{ this.state.authenticated? <Route path='/stories' component={ Stories } /> : null }
 				<Route path='/accepted' component={ Accepted } />
 				<Route path='/unaccepted' component={ Unaccepted } />
-				<Redirect from='/' to='/unaccepted'/>
+				<Redirect from='/' to='/login'/>
 			</Switch>
 		</BrowserRouter>
 		);

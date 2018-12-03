@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
+import axios from "axios/index";
 // import '../styles/login.css';
 
 class Register extends Component {
@@ -9,7 +10,7 @@ class Register extends Component {
 
 
     this.state = {
-        email: '',
+        username: '',
         password: '',
         firstName: '',
         lastName: '',
@@ -22,9 +23,29 @@ class Register extends Component {
     }
 
     register() {
-        if(this.state.username && this.state.password && this.state.email && this.state.name){
-            // Talk to PHP somehow
-            // this.setState({redirectToReferrer: true});
+        if(this.state.username && this.state.password && this.state.firstName && this.state.lastName){
+          var self = this;
+          var data = {
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            username: this.state.username,
+            password: this.state.password
+          };
+          axios({
+            method: 'post',
+            url: 'http://localhost/project/api/register',
+            headers: {
+              "Content-Type": "application/json"
+            },
+            data
+          }).then(function(response) {
+            console.log('User Registered');
+            console.log(response);
+            self.setState({redirectToReferrer: true});
+          }).catch(function(error) {
+            console.log('Error in Registration');
+            self.setState({status: error.response.status});  // 401
+          });
         }
     }
 
@@ -33,8 +54,8 @@ class Register extends Component {
     }
 
     render() {
-        if (this.state.redirectToReferrer /*|| sessionStorage.getItem('userData')*/) {
-            return (<Redirect to={'/home'}/>)
+        if (this.state.redirectToReferrer) {
+            return (<Redirect to={'/query'}/>)
         }
 
 
@@ -45,7 +66,7 @@ class Register extends Component {
                 <div className="medium-5 columns left">
                     <h4>Register</h4>
                     <label>Email</label>
-                    <input type="text" name="email"  placeholder="Email" onChange={this.onChange}/>
+                    <input type="text" name="username"  placeholder="Email" onChange={this.onChange}/>
                     <label>First Name</label>
                     <input type="text" name="firstName"  placeholder="First Name" onChange={this.onChange}/>
                     <label>Last Name</label>
