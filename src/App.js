@@ -24,7 +24,7 @@ class App extends Component {
 		this.state = {
 			user: {
 				username: null,
-				userID:null,
+				userID: null,
 				favorites: []
 			},
 			authenticated: true,

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 // import '../styles/login.css';
 import * as actions from '../store/actions/app.actions';
-// import Store from '../store/store';
+import Store from '../store/store';
 
 // This should be a container
 class Login extends Component {
@@ -26,28 +26,13 @@ class Login extends Component {
 
     login() {
         if(this.state.username && this.state.password){
-          var self = this;
-          var data = {
-            username: this.state.username,
-            password: this.state.password
-          };
-          axios({
-            method: 'post',
-            url: 'http://localhost/project/api/login',
-            headers: {
-              "Content-Type": "application/json"
-            },
-            data
-          }).then(function(response) {
-            console.log('Authenticated');
-            var parse = JSON.parse(response.data);
-            //console.log(parse['user_id']);
-            self.setState({redirectToReferrer: true});
-            self.setState({userID: parse['user_id']});
-          }).catch(function(error) {
-            console.log('Error on Authentication');
-            self.setState({status: error.response.status});  // 401
-          });
+          Store.dispatch(actions.LOGIN_ACTION(this.state.username, this.state.password));
+          if (Store.getState().app.authenticated === true) {
+            Store.dispatch(actions.SET_TOKEN_ACTION());
+            this.setState({redirectToReferrer: true});
+          } else {
+            // Display error message
+          }
     }
 }
 
@@ -78,7 +63,7 @@ class Login extends Component {
     }
 }
 
-
+/*
 const mapStateToProps = state => {
   return {
     authenticated: state.app.authenticated,
@@ -90,7 +75,8 @@ const mapDispatchToProps = dispatch => {
   return {
     setToken: () => dispatch(actions.SET_TOKEN_ACTION('aKFtu5M'))
   };
-}; 
+};
+*/
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(Login);
+export default connect(/*null,mapDispatchToProps*/)(Login);

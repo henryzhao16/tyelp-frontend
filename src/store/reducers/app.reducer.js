@@ -3,6 +3,7 @@ import * as actions from '../actions/app.actions';
 const initialState = {
     user: {
         username: null,
+        userID: null,
         favorites: []
     },
     authenticated: false,

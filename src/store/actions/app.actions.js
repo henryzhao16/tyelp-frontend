@@ -1,3 +1,6 @@
+import axios from "axios/index";
+import Store from '../store';
+
 /**
  * Application Actions
  */
@@ -19,8 +22,7 @@ export const SET_FAVORITES_SUCCESS = 'SET_FAVORITE_SUCCESS';
 
 export const SET_TOKEN_ACTION = () => {
     
-    let token = null;
-    // asynchronous call using axios instance
+    let token = 'aKFtu5M';
     
     return (dispatch /* getState */) => { // second argument to access redux state if needed
         dispatch(SET_TOKEN_ACTION_SUCCESS(token));
@@ -41,9 +43,35 @@ export const LOGIN_ACTION = (username, password) => {
     let user = null;
     // asynchronous call using axios instance
 
-    return (dispatch) => { 
-        dispatch(LOGIN_ACTION_SUCCESS(user));
+    var data = {
+      username: username,
+      password: password
     };
+
+    return (dispatch) => {
+      return axios({
+        method: 'post',
+        url: 'http://localhost/project/api/login',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        data
+      }).then(function (response) {
+        console.log('Authenticated');
+
+        user = {
+          username: username,
+          userID: JSON.parse(response.data)['user_id'],
+          favorites: []
+        };
+      }).then(function() {
+          console.log(user);
+          dispatch(LOGIN_ACTION_SUCCESS(user));
+      }).catch(function (error) {
+          console.log('Error on Authentication');
+          console.log(error);
+        });
+    }
 }
 
 export const LOGIN_ACTION_SUCCESS = (user) => {

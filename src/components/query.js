@@ -90,10 +90,10 @@ class Query extends Component {
 
 		var self = this;
     var data = {
-      //user_id: this.state.userID,
+      user_id: Store.getState().app.user.userID,
       place_id: this.state.restaurant.id
     };
-
+		console.log(this.state.userID);
     axios({
       method: 'post',
       url: 'http://localhost/project/api/history',
