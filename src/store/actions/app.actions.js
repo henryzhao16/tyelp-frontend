@@ -53,15 +53,21 @@ export const LOGIN_ACTION = (username, password) => {
             username,
             password,
         }).then((response) => {
-            var data = JSON.parse(response.data);
-            var userID = data['user_id'];
+          var parsed = JSON.parse(response.data);
+          var userID = parsed['user_id'];
 
-            delete data['user_id'];
-            user = {
-                username: username,
-                userID: userID,
-                favorites: data
-            };
+          var data = [];
+
+          for(var x in parsed){
+            data.push(parsed[x]);
+          }
+
+          delete data['user_id'];
+          user = {
+            username: username,
+            userID: userID,
+            favorites: data
+          };
             dispatch(LOGIN_ACTION_SUCCESS(user));
             console.log("Authenticated");
         }).catch(function (error) {
