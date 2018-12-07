@@ -67,7 +67,15 @@ const appReducer = (state = initialState, action) => {
             }
         case actions.SET_FAVORITES_SUCCESS:
 
-            const current_favorites = state.user.favorites;
+            const current_favorites = state.user.favorites/*.map( x => {
+                return {
+                  name: x.name,
+                  rating: x.rating,
+                  price_level: x.price_level,
+                  vicinity: x.vicinity
+                }
+            })*/;
+            console.log(current_favorites);
             var new_favorites;
 
             if (current_favorites.length < 5) {

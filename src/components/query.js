@@ -79,7 +79,10 @@ class Query extends Component {
 		Store.dispatch(actions.SET_FAVORITES_ACTION(selection));
 		Store.dispatch(actions.SET_HISTORY_ACTION(
       Store.getState().app.user.userID,
-			selection.id
+			selection.name,
+			selection.rating,
+			selection.price_level,
+			selection.vicinity
 		));
 		this.props.history.push({ pathname: '/stories' })
 	}

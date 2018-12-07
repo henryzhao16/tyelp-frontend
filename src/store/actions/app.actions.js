@@ -1,4 +1,5 @@
 import axiosInstance from "../../interceptors/axios";
+import Store from "../store";
 /**
  * Application Actions
  */
@@ -52,10 +53,14 @@ export const LOGIN_ACTION = (username, password) => {
             username,
             password,
         }).then((response) => {
+            var data = JSON.parse(response.data);
+            var userID = data['user_id'];
+
+            delete data['user_id'];
             user = {
                 username: username,
-                userID: JSON.parse(response.data)['user_id'],
-                favorites: []
+                userID: userID,
+                favorites: data
             };
             dispatch(LOGIN_ACTION_SUCCESS(user));
             console.log("Authenticated");
@@ -165,11 +170,14 @@ export const SET_FAVORITES_ACTION_SUCCESS = (favorite) => {
     };
 }
 
-export const SET_HISTORY_ACTION = (userID, restoID) => {
+export const SET_HISTORY_ACTION = (userID, name, rating, price_level, vicinity) => {
   return () => {
     axiosInstance.addPlaceToHistory({
       userID,
-      restoID
+      name,
+      rating,
+      price_level,
+      vicinity
     }).catch(function (error) {
       console.log(error);
     });

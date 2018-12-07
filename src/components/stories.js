@@ -20,7 +20,6 @@ class Stories extends Component {
 			}
 		);
 	}
-
 	// Function to route to Query component
 	back = () => {
 		this.props.history.push({ pathname: '/query' });
