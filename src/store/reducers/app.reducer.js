@@ -8,11 +8,12 @@ const initialState = {
     },
     authenticated: false,
     token: null,
-    distance: 5000,
+    distance: 0,
     coordinates: {
         latitude: 45.505724099999995,
         longitude: -73.6995759
-    }
+    },
+    queryMode: 'lookup'
 }
 
 const appReducer = (state = initialState, action) => {
@@ -40,7 +41,7 @@ const appReducer = (state = initialState, action) => {
                 },
                 authenticated: false,
                 token: null,
-                distance: 5000,
+                distance: 0,
                 coordinates: {
                     latitude: 45.505724099999995,
                     longitude: -73.6995759
@@ -57,7 +58,8 @@ const appReducer = (state = initialState, action) => {
         case actions.SET_DISTANCE_SUCCESS:
             return {
                 ...state,
-                distance: action.payload.distance
+                distance: action.payload.distance.distance,
+                queryMode: action.payload.distance.queryMode
             }
         case actions.SET_COORDINATES_SUCCESS:
             return {
@@ -83,10 +85,10 @@ const appReducer = (state = initialState, action) => {
             var new_favorites;
 
             if (current_favorites.length < 5) {
-                new_favorites = [...current_favorites, action.payload.favorite]
+                new_favorites = [...current_favorites, action.payload.favorite.selection]
             }
             else {
-                new_favorites = [...current_favorites.slice(1), action.payload.favorite];
+                new_favorites = [...current_favorites.slice(1), action.payload.favorite.selection];
             }
 
             return {
@@ -94,7 +96,8 @@ const appReducer = (state = initialState, action) => {
                 user: {
                     ...state.user,
                     favorites: new_favorites
-                }
+                },
+                queryMode: action.payload.favorite.queryMode
             }
         default:
             return state;       
