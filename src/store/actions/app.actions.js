@@ -1,5 +1,4 @@
 import axiosInstance from "../../interceptors/axios";
-import Store from "../store";
 /**
  * Application Actions
  */
@@ -21,6 +20,7 @@ export const SET_FAVORITES_SUCCESS = 'SET_FAVORITE_SUCCESS';
 export const SET_HISTORY = 'SET_HISTORY';
 export const GET_HISTORY = 'GET_HISTORY';
 export const GET_HISTORY_SUCCESS = 'GET_HISTORY_SUCCESS';
+
  
 /**
  * Application Action Creators
@@ -130,6 +130,25 @@ export const SET_DISTANCE_ACTION = (distance) => {
     };
 }
 
+    // API call to update DB
+
+    return (dispatch) => {
+       dispatch(LOGOUT_ACTION_SUCCESS());
+    }
+}
+
+export const LOGOUT_ACTION_SUCCESS = () => {
+    return {
+        type: LOGOUT_SUCCESS
+    }
+}
+
+export const SET_DISTANCE_ACTION = (distance) => {
+    return (dispatch) => {
+        dispatch(SET_DISTANCE_ACTION_SUCCESS(distance))
+    };
+}
+
 export const SET_DISTANCE_ACTION_SUCCESS = (distance) => {
     return {
         type: SET_DISTANCE_SUCCESS,
@@ -183,5 +202,3 @@ export const SET_HISTORY_ACTION = (userID, name, rating, price_level, vicinity) 
     });
   };
 }
-
-

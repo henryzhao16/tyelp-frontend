@@ -46,12 +46,14 @@ const appReducer = (state = initialState, action) => {
                     longitude: -73.6995759
                 }
             }
+        
         case actions.REGISTER_SUCCESS:
             return {
               ...state,
               user: action.payload.user,
               authenticated: true
             }
+
         case actions.SET_DISTANCE_SUCCESS:
             return {
                 ...state,
@@ -67,6 +69,7 @@ const appReducer = (state = initialState, action) => {
             }
         case actions.SET_FAVORITES_SUCCESS:
 
+
             const current_favorites = state.user.favorites/*.map( x => {
                 return {
                   name: x.name,
@@ -76,6 +79,7 @@ const appReducer = (state = initialState, action) => {
                 }
             })*/;
             console.log(current_favorites);
+
             var new_favorites;
 
             if (current_favorites.length < 5) {
