@@ -8,13 +8,18 @@ export const SET_TOKEN_SUCCESS = 'SET_TOKEN_SUCCESS';
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCESS';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const REGISTER = 'REGISTER';
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const SET_DISTANCE = 'SET_DISTANCE';
 export const SET_DISTANCE_SUCCESS = 'SET_DISTANCE_SUCCESS';
 export const SET_COORDINATES = 'SET_COORDINATES';
 export const SET_COORDINATES_SUCCESS = 'SET_COORDINATES_SUCCESS';
 export const SET_FAVORITES = 'SET_FAVORITE';
 export const SET_FAVORITES_SUCCESS = 'SET_FAVORITE_SUCCESS';
+export const SET_HISTORY = 'SET_HISTORY';
+export const GET_HISTORY = 'GET_HISTORY';
+export const GET_HISTORY_SUCCESS = 'GET_HISTORY_SUCCESS';
  
 /**
  * Application Action Creators
@@ -40,16 +45,23 @@ export const SET_TOKEN_ACTION_SUCCESS = (token) => {
 };
 
 export const LOGIN_ACTION = (username, password) => {
+    let user = null;
+
     return (dispatch) => {
         axiosInstance.logIn({
             username,
             password,
         }).then((response) => {
-            //TODO Make the server return a username, and authentication token
-            dispatch(LOGIN_ACTION_SUCCESS({
-                username : `User #${response.data.user_id}`,
-                favorites : [],
-            }));
+            user = {
+                username: username,
+                userID: JSON.parse(response.data)['user_id'],
+                favorites: []
+            };
+            dispatch(LOGIN_ACTION_SUCCESS(user));
+            console.log("Authenticated");
+        }).catch(function (error) {
+          console.log('Error on Authentication');
+          console.log(error);
         });
     };
 }
@@ -64,9 +76,6 @@ export const LOGIN_ACTION_SUCCESS = (user) => {
 }
 
 export const LOGOUT_ACTION = () => {
-
-    // API call to update DB
-
     return (dispatch) => {
        dispatch(LOGOUT_ACTION_SUCCESS());
     }
@@ -76,6 +85,38 @@ export const LOGOUT_ACTION_SUCCESS = () => {
     return {
         type: LOGOUT_SUCCESS
     }
+}
+
+export const REGISTER_ACTION = (username, firstName, lastName, password) => {
+    let user = null;
+
+    return (dispatch) => {
+      axiosInstance.register({
+        username,
+        firstName,
+        lastName,
+        password,
+      }).then((response) => {
+        user = {
+          username: username,
+          userID: JSON.parse(response.data)['user_id'],
+          favorites: []
+        };
+        console.log(JSON.parse(response.data)['user_id']);
+        dispatch(REGISTER_ACTION_SUCCESS(user));
+      }).catch(function (error) {
+        console.log(error);
+      });
+    };
+}
+
+export const REGISTER_ACTION_SUCCESS = (user) => {
+  return {
+    type: REGISTER_SUCCESS,
+    payload: {
+      user: user
+    }
+  }
 }
 
 export const SET_DISTANCE_ACTION = (distance) => {
@@ -123,3 +164,16 @@ export const SET_FAVORITES_ACTION_SUCCESS = (favorite) => {
         }
     };
 }
+
+export const SET_HISTORY_ACTION = (userID, restoID) => {
+  return () => {
+    axiosInstance.addPlaceToHistory({
+      userID,
+      restoID
+    }).catch(function (error) {
+      console.log(error);
+    });
+  };
+}
+
+

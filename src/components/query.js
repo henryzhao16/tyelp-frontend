@@ -77,6 +77,10 @@ class Query extends Component {
 	select = () => {
 		const selection = this.state.restaurants[this.state.index];
 		Store.dispatch(actions.SET_FAVORITES_ACTION(selection));
+		Store.dispatch(actions.SET_HISTORY_ACTION(
+      Store.getState().app.user.userID,
+			selection.id
+		));
 		this.props.history.push({ pathname: '/stories' })
 	}
 

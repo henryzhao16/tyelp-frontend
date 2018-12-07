@@ -3,6 +3,7 @@ import * as actions from '../actions/app.actions';
 const initialState = {
     user: {
         username: null,
+        userID: null,
         favorites: []
     },
     authenticated: false,
@@ -34,6 +35,7 @@ const appReducer = (state = initialState, action) => {
                 ...state,
                 user: {
                     username: null,
+                    userID: null,
                     favorites: []
                 },
                 authenticated: false,
@@ -43,6 +45,12 @@ const appReducer = (state = initialState, action) => {
                     latitude: 45.505724099999995,
                     longitude: -73.6995759
                 }
+            }
+        case actions.REGISTER_SUCCESS:
+            return {
+              ...state,
+              user: action.payload.user,
+              authenticated: true
             }
         case actions.SET_DISTANCE_SUCCESS:
             return {

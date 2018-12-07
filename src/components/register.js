@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
+import Store from "../store/store";
+import * as actions from "../store/actions/app.actions";
 // import '../styles/login.css';
 
 class Register extends Component {
 
-    constructor(props) {
-        super(props);
+  constructor(){
+    super();
 
 
     this.state = {
-        email: '',
+        username: '',
         password: '',
         firstName: '',
-        lastName: '',
-        redirectToReferrer: false
+        lastName: ''
     };
 
     this.register = this.register.bind(this);
@@ -22,9 +23,13 @@ class Register extends Component {
     }
 
     register() {
-        if(this.state.username && this.state.password && this.state.email && this.state.name){
-            // Talk to PHP somehow
-            // this.setState({redirectToReferrer: true});
+        if(this.state.username && this.state.password && this.state.firstName && this.state.lastName){
+          Store.dispatch(actions.REGISTER_ACTION(
+            this.state.username,
+            this.state.firstName,
+            this.state.lastName,
+            this.state.password
+          ));
         }
     }
 
@@ -33,9 +38,9 @@ class Register extends Component {
     }
 
     render() {
-        if (this.state.redirectToReferrer /*|| sessionStorage.getItem('userData')*/) {
-            return (<Redirect to={'/home'}/>)
-        }
+      if (Store.getState().app.authenticated) {
+        return (<Redirect to={'/query'}/>)
+      }
 
 
 
@@ -45,7 +50,7 @@ class Register extends Component {
                 <div className="medium-5 columns left">
                     <h4>Register</h4>
                     <label>Email</label>
-                    <input type="text" name="email"  placeholder="Email" onChange={this.onChange}/>
+                    <input type="text" name="username"  placeholder="Email" onChange={this.onChange}/>
                     <label>First Name</label>
                     <input type="text" name="firstName"  placeholder="First Name" onChange={this.onChange}/>
                     <label>Last Name</label>
@@ -53,7 +58,7 @@ class Register extends Component {
                     <label>Password</label>
                     <input type="password" name="password"  placeholder="Password" onChange={this.onChange}/>
 
-                    <input type="submit" className="button" value="Register" onClick={this.register}/>
+                    <input type="submit" className="button success" value="Register" onClick={this.register}/>
                     <a href="/login">Login</a>
                 </div>
 

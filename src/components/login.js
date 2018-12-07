@@ -12,8 +12,7 @@ class Login extends Component {
 
         this.state = {
             username: '',
-            password: '',
-            redirectToReferrer: false
+            password: ''
         };
 
         this.login = this.login.bind(this);
@@ -23,13 +22,11 @@ class Login extends Component {
 
     login() {
         if(this.state.username && this.state.password){
-            // Check against backend values somehow
             Store.dispatch(actions.LOGIN_ACTION(
                 this.state.username,
                 this.state.password
             ));
         }
-
     }
 
     onChange(e){
@@ -40,7 +37,7 @@ class Login extends Component {
 
 
     render() {
-        if (this.props.authenticated /* || sessionStorage.getItem('userData')*/) {
+        if (Store.getState().app.authenticated) {
             return (<Redirect to={'/query'}/>)
         }
 
@@ -60,6 +57,7 @@ class Login extends Component {
     }
 }
 
+/*
 const mapStateToProps = state => {
   return {
     authenticated: state.app.authenticated,
@@ -72,7 +70,6 @@ const mapDispatchToProps = dispatch => {
     setToken: () => dispatch(actions.SET_TOKEN_ACTION('aKFtu5M'))
   };
 }; 
+*/
 
-
-
-export default connect(mapStateToProps,mapDispatchToProps)(Login);
+export default connect(/*mapStateToProps,mapDispatchToProps*/)(Login);
